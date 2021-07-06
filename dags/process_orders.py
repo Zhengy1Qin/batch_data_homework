@@ -6,8 +6,8 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.operators.python import PythonOperator
 from airflow.sensors.bash import BashSensor
 
-from shared import normalize_csv, load_csv_to_postgres
-import process_orders_sqls as sqls
+from examples.shared import normalize_csv, load_csv_to_postgres
+import examples.process_orders_sqls as sqls
 
 default_args = {"owner": "airflow"}
 connection_id = 'dwh'

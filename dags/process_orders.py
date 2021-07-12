@@ -6,8 +6,8 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.operators.python import PythonOperator
 from airflow.sensors.bash import BashSensor
 
-from examples.shared import normalize_csv, load_csv_to_postgres
-import examples.process_orders_sqls as sqls
+from shared import normalize_csv, load_csv_to_postgres
+import process_orders_sqls as sqls
 
 default_args = {"owner": "airflow"}
 connection_id = 'dwh'
@@ -23,7 +23,7 @@ with DAG(
     check_stg_products_csv_readiness = BashSensor(
         task_id="check_stg_products_csv_readiness",
         bash_command="""
-            ls /data/raw/products_{{ ds }}.csv
+            ls /data/raw/products_2019-01-01.csv
         """,
     )
     create_stg_products_table = PostgresOperator(
@@ -36,7 +36,7 @@ with DAG(
         task_id='normalize_products_csv',
         python_callable=normalize_csv,
         op_kwargs={
-            'source': "/data/raw/products_{{ ds }}.csv",
+            'source': "/data/raw/products_2019-01-01.csv",
             'target': "/data/stg/products_{{ ds }}.csv"
         }
     )
@@ -71,7 +71,7 @@ with DAG(
     check_stg_orders_csv_readiness = BashSensor(
         task_id="check_stg_orders_csv_readiness",
         bash_command="""
-            ls /data/raw/orders_{{ ds }}.csv
+            ls /data/raw/orders_2020-05-23.csv
         """,
     )
 

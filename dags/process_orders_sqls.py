@@ -109,7 +109,7 @@ WITH grouped_stg_orders as (
     FROM stg_orders
     order by id, event_time
 ), distinct_stg_orders as (
-    select id, status, event_time
+    select id, status, event_time,rn
     from grouped_stg_orders where grouped_stg_orders.rn = 1
 ) ,new_records as (select 
     current_orders.id,

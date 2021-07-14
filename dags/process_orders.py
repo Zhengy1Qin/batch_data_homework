@@ -79,7 +79,7 @@ with DAG(
         task_id='normalize_orders_csv',
         python_callable=normalize_csv,
         op_kwargs={
-            'source': "/data/raw/orders_{{ ds }}.csv",
+            'source': "/data/raw/orders_2020-05-23.csv",
             'target': "/data/stg/orders_{{ ds }}.csv"
         }
     )

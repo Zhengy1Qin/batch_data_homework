@@ -54,5 +54,18 @@ with DAG(
         },
     )
 
+    create_fact_inventory_table = PostgresOperator(
+        task_id="create_fact_inventory_table",
+        postgres_conn_id=connection_id,
+        sql=sqls.create_fact_inventory_sql,
+    )
 
-    check_stg_products_csv_readiness >> normalize_products_csv >> create_stg_products_table >> load_products_to_stg_products_table
+    transform_fact_inventory_table = PostgresOperator(
+        task_id="transform_fact_inventory_table",
+        postgres_conn_id=connection_id,
+        sql=sqls.transform_fact_inventory_sql,
+    )
+
+
+
+    check_stg_products_csv_readiness >> normalize_products_csv >> create_stg_products_table >> load_products_to_stg_products_table >> create_fact_inventory_table >> transform_fact_inventory_table
